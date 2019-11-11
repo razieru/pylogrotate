@@ -13,22 +13,37 @@ def diskSpace (path):
     usage=shutil.disk_usage(path)
     return usage.free/usage.total
 
-def removeDirtyFolders (path):
-	for subFolder in os.listdir (path):
-		if diskSpace(path) < safeLine:
-			fullPath=os.path.join (path, subFolder)
-			shutil.rmtree(fullPath)
-		else:
-			return 0
+def getCTime (path):
+	return time.ctime(os.path.getctime(path))
 
 if len(sys.argv) > 1:
 	removeFoldersPath = sys.argv[:]
 	removeFoldersPath.pop(0)
-
-while (True):
-	for folderPath in removeFoldersPath:
-		if (os.path.exists(folderPath)):
-			freeSpace=diskSpace(folderPath)
-			if freeSpace < criticalLine:
-				removeDirtyFolders(folderPath)
-	time.sleep(sleepTime)
+print("Start pylogrotate_remove")
+if len(removeFoldersPath) == 1:
+	while (True):
+		for folderPath in removeFoldersPath:
+			if (os.path.exists(folderPath)):
+				if diskSpace(folderPath) < criticalLine:
+					for subFolder in os.listdir (folderPath):
+						if diskSpace(folderPath) < safeLine:
+							fullPath=os.path.join (folderPath, subFolder)
+							if (os.path.exists(fullPath)):
+								shutil.rmtree(fullPath)
+						else:
+							break
+		time.sleep(sleepTime)
+if len(removeFoldersPath) > 1:
+	while (True):
+		allDirectories = []
+		for folderPath in removeFoldersPath:		
+			if (os.path.exists(folderPath)):			
+				if diskSpace(folderPath) < criticalLine:
+					for subFolder in os.listdir (folderPath):
+						allDirectories.append(os.path.join(folderPath,subFolder))
+		allDirectories.sort(key=getCTime)
+		for directory in allDirectories:
+			if (os.path.exists(directory)):
+				if diskSpace(directory) < safeLine:
+					shutil.rmtree(directory)
+		time.sleep(sleepTime)
