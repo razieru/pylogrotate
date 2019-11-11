@@ -31,7 +31,7 @@ while True:
 	allDirectories.sort(key=getCTime,reverse=reverseWalk)
 	for directory in allDirectories:
 		nowTime = time.time ()
-		checkDate = (nowTime-getMTime(directory)) > diffTimeInSec
+		checkDate = (nowTime-getMTime(directory)) < diffTimeInSec
 		for folderName, subFolders, fileNames in os.walk (directory):
 			for fileName in fileNames:
 				if fileName.endswith(archiveExtension):
