@@ -40,9 +40,10 @@ while True:
 				readyForArchive = True
 				if checkDate:
 					readyForArchive = (nowTime-getMTime(fileFullPath)) > diffTimeInSec
-				newZip = zipfile.ZipFile (fileFullPath + ".zip" , 'w', compressType)
-				newZip.write(fileFullPath,fileName)
-				newZip.close()
-				os.remove (fileFullPath)
+				if readyForArchive:
+					newZip = zipfile.ZipFile (fileFullPath + ".zip" , 'w', compressType)
+					newZip.write(fileFullPath,fileName)
+					newZip.close()
+					os.remove (fileFullPath)
 	reverseWalk = True
 	time.sleep(sleepTimeInSec)	
