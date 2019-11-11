@@ -34,14 +34,14 @@ while True:
 		checkDate = (nowTime-getMTime(directory)) > diffTimeInSec
 		for folderName, subFolders, fileNames in os.walk (directory):
 			for fileName in fileNames:
-				if fileName.endswith(".zip"):
+				if fileName.endswith(archiveExtension):
 					continue
 				fileFullPath = os.path.join(directory,fileName)
 				readyForArchive = True
 				if checkDate:
 					readyForArchive = (nowTime-getMTime(fileFullPath)) > diffTimeInSec
 				if readyForArchive:
-					newZip = zipfile.ZipFile (fileFullPath + ".zip" , 'w', compressType)
+					newZip = zipfile.ZipFile (fileFullPath + archiveExtension , 'w', compressType)
 					newZip.write(fileFullPath,fileName)
 					newZip.close()
 					os.remove (fileFullPath)
