@@ -36,8 +36,8 @@ if len(removeFoldersPath) == 1:
 if len(removeFoldersPath) > 1:
 	while (True):
 		allDirectories = []
-		for folderPath in removeFoldersPath:		
-			if (os.path.exists(folderPath)):			
+		for folderPath in removeFoldersPath:
+			if (os.path.exists(folderPath)):
 				if diskSpace(folderPath) < criticalLine:
 					for subFolder in os.listdir (folderPath):
 						allDirectories.append(os.path.join(folderPath,subFolder))
