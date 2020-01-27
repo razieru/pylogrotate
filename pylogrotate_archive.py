@@ -5,7 +5,7 @@ archiveFoldersPath = ["/uslog"]      # files archive in this folders
 archiveExtension = ".zip"            # extension for new archives
 diffTimeInSec = 300
 sleepTimeInSec = 300
-compressType = zipfile.ZIP_LZMA
+compressType = zipfile.ZIP_DEFLATED
 
 import sys
 import time
